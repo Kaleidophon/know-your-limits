@@ -1,3 +1,6 @@
 torch
 numpy
 blitz-bayesian-pytorch
+tqdm
+scikit-learn
+scipy
