@@ -46,7 +46,7 @@ def perform_hyperparameter_search(
     save_top_n: int
         Save the top n parameter configuration. Default is 10.
     """
-    X_train, y_train = make_moons(n_samples=1000)
+    X_train, y_train = make_moons(n_samples=400, noise=0.125)
 
     with tqdm(total=get_num_runs(models)) as progress_bar:
 
@@ -101,7 +101,6 @@ def perform_hyperparameter_search(
                         )
                     )[:save_top_n]
                 )
-                # TODO: Refactor
                 model_result_dir = f"{result_dir}/"
 
                 if not os.path.exists(model_result_dir):

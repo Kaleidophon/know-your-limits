@@ -4,3 +4,4 @@ blitz-bayesian-pytorch
 tqdm
 scikit-learn
 scipy
+matplotlib

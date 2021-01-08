@@ -7,9 +7,6 @@ hyperparameters, etc.
 import numpy as np
 from scipy.stats import uniform
 
-
-# TODO: Refactor
-
 # ### Models and novelty scoring functions ###
 
 SINGLE_PRED_NN_MODELS = {
