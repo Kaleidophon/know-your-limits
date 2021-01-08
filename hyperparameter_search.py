@@ -28,6 +28,7 @@ from src.model_init import MODEL_CLASSES
 
 # CONST
 SEED = 123
+TRIALS = 3
 RESULT_DIR = "./hyperparameters"
 
 
@@ -46,9 +47,9 @@ def perform_hyperparameter_search(
     save_top_n: int
         Save the top n parameter configuration. Default is 10.
     """
-    X_train, y_train = make_moons(n_samples=400, noise=0.125)
+    X_train, y_train = make_moons(n_samples=1000, noise=0.125)
 
-    with tqdm(total=get_num_runs(models)) as progress_bar:
+    with tqdm(total=get_num_runs(models) * TRIALS) as progress_bar:
 
         for model_name in models:
 
@@ -62,32 +63,38 @@ def perform_hyperparameter_search(
             for run, param_set in enumerate(sampled_params):
 
                 param_set.update(input_size=2)
-                model = model_type(**param_set)
+                mean_score = 0
 
-                try:
-                    model.fit(X_train, y_train, **TRAIN_PARAMS[model_name])
-                    preds = model.predict(X_train)
+                for trial in range(TRIALS):
+                    model = model_type(**param_set)
 
-                    # When model training goes completely awry
-                    if np.isnan(preds).all():
-                        score = 0
+                    try:
+                        model.fit(X_train, y_train, **TRAIN_PARAMS[model_name])
+                        preds = model.predict(X_train)
 
-                    else:
-                        preds = preds[:, 1]
-                        score = roc_auc_score(
-                            y_true=y_train[~np.isnan(preds)],
-                            y_score=preds[~np.isnan(preds)],
-                        )
+                        # When model training goes completely awry
+                        if np.isnan(preds).all():
+                            score = 0
 
-                # In case of nans due bad training parameters
-                except (ValueError, RuntimeError) as e:
-                    print(f"There was an error: '{str(e)}', run aborted.")
-                    score = -np.inf
+                        else:
+                            preds = preds[:, 1]
+                            score = roc_auc_score(
+                                y_true=y_train[~np.isnan(preds)],
+                                y_score=preds[~np.isnan(preds)],
+                            )
 
-                if np.isnan(score):
-                    score = -np.inf
+                    # In case of nans due bad training parameters
+                    except (ValueError, RuntimeError) as e:
+                        print(f"There was an error: '{str(e)}', run aborted.")
+                        score = -np.inf
 
-                scores[run] = {"score": score, "hyperparameters": param_set}
+                    if np.isnan(score):
+                        score = -np.inf
+
+                    mean_score += score
+
+                mean_score /= TRIALS
+                scores[run] = {"score": mean_score, "hyperparameters": param_set}
                 progress_bar.update(1)
 
                 # Rank and save results

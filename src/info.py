@@ -24,18 +24,18 @@ SINGLE_INST_MULTIPLE_PRED_NN_MODELS = {
     "BBB",  # Bayesian Neural Network
 }
 
-AVAILABLE_MODELS = NO_ENSEMBLE_NN_MODELS = (
-    SINGLE_PRED_NN_MODELS | SINGLE_INST_MULTIPLE_PRED_NN_MODELS
-)
+NO_ENSEMBLE_NN_MODELS = SINGLE_PRED_NN_MODELS | SINGLE_INST_MULTIPLE_PRED_NN_MODELS
+
+AVAILABLE_MODELS = NO_ENSEMBLE_NN_MODELS | ENSEMBLE_MODELS
 
 # Available novelty scoring functions for models
 AVAILABLE_SCORING_FUNCS = {
     "NN": ("entropy", "max_prob"),
     "PlattScalingNN": ("entropy", "max_prob"),
-    "MCDropout": ("entropy", "std", "mutual_information"),
-    "BBB": ("entropy", "std", "mutual_information"),
-    "NNEnsemble": ("entropy", "std", "mutual_information"),
-    "AnchoredNNEnsemble": ("entropy", "std", "mutual_information"),
+    "MCDropout": ("entropy", "var", "mutual_information"),
+    "BBB": ("entropy", "var", "mutual_information"),
+    "NNEnsemble": ("entropy", "var", "mutual_information"),
+    "AnchoredNNEnsemble": ("entropy", "var", "mutual_information"),
 }
 
 # ### Hyperparameters ###
@@ -149,7 +149,7 @@ PARAM_SEARCH = {
 NUM_EVALS = {
     "NN": 60,
     "MCDropout": 60,
-    "BBB": 200,
+    "BBB": 90,
 }
 
 

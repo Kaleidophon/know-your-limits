@@ -24,20 +24,20 @@ SCORING_FUNCS = {
     ("MCDropout", "entropy"): lambda model, data: entropy(
         model.predict_proba(data), axis=1
     ),
-    ("MCDropout", "std"): lambda model, data: model.get_std(data),
+    ("MCDropout", "var"): lambda model, data: model.get_var(data),
     (
         "MCDropout",
         "mutual_information",
     ): lambda model, data: model.get_mutual_information(data),
     ("BBB", "entropy"): lambda model, data: entropy(model.predict_proba(data), axis=1),
-    ("BBB", "std"): lambda model, data: model.get_std(data),
+    ("BBB", "var"): lambda model, data: model.get_var(data),
     ("BBB", "mutual_information"): lambda model, data: model.get_mutual_information(
         data
     ),
     ("NNEnsemble", "entropy"): lambda model, data: entropy(
         model.predict_proba(data), axis=1
     ),
-    ("NNEnsemble", "std"): lambda model, data: model.get_std(data),
+    ("NNEnsemble", "var"): lambda model, data: model.get_var(data),
     (
         "NNEnsemble",
         "mutual_information",
@@ -45,7 +45,7 @@ SCORING_FUNCS = {
     ("AnchoredNNEnsemble", "entropy"): lambda model, data: entropy(
         model.predict_proba(data), axis=1
     ),
-    ("AnchoredNNEnsemble", "std"): lambda model, data: model.get_std(data),
+    ("AnchoredNNEnsemble", "var"): lambda model, data: model.get_var(data),
     (
         "AnchoredNNEnsemble",
         "mutual_information",

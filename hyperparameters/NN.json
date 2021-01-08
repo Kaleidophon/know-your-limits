@@ -1,126 +1,121 @@
 {
-    "43": {
-        "score": 0.976804,
+    "17": {
+        "score": 0.9160383999999999,
         "hyperparameters": {
-            "dropout_rate": 0.096917,
-            "hidden_sizes": [
-                20
-            ],
-            "lr": 0.000538,
-            "class_weight": false,
-            "input_size": 2
-        }
-    },
-    "27": {
-        "score": 0.956944,
-        "hyperparameters": {
-            "dropout_rate": 0.130614,
-            "hidden_sizes": [
-                20
-            ],
-            "lr": 0.000538,
-            "class_weight": false,
-            "input_size": 2
-        }
-    },
-    "24": {
-        "score": 0.946416,
-        "hyperparameters": {
-            "dropout_rate": 0.275477,
+            "dropout_rate": 0.452688,
             "hidden_sizes": [
                 15,
                 15
             ],
             "lr": 0.000538,
-            "class_weight": false,
             "input_size": 2
         }
     },
-    "22": {
-        "score": 0.942808,
+    "7": {
+        "score": 0.9143975999999998,
         "hyperparameters": {
-            "dropout_rate": 0.342021,
-            "hidden_sizes": [
-                20
-            ],
-            "lr": 0.000538,
-            "class_weight": false,
-            "input_size": 2
-        }
-    },
-    "39": {
-        "score": 0.939876,
-        "hyperparameters": {
-            "dropout_rate": 0.007088,
-            "hidden_sizes": [
-                15
-            ],
-            "lr": 0.000538,
-            "class_weight": false,
-            "input_size": 2
-        }
-    },
-    "49": {
-        "score": 0.9388279999999999,
-        "hyperparameters": {
-            "dropout_rate": 0.420002,
+            "dropout_rate": 0.274727,
             "hidden_sizes": [
                 20,
                 20
             ],
             "lr": 0.000538,
-            "class_weight": false,
             "input_size": 2
         }
     },
-    "14": {
-        "score": 0.9376039999999999,
+    "35": {
+        "score": 0.90624,
         "hyperparameters": {
-            "dropout_rate": 0.031969,
+            "dropout_rate": 0.030794,
             "hidden_sizes": [
                 20,
                 20
             ],
             "lr": 0.000538,
-            "class_weight": false,
             "input_size": 2
         }
     },
-    "33": {
-        "score": 0.9338200000000001,
+    "59": {
+        "score": 0.9048632000000001,
         "hyperparameters": {
-            "dropout_rate": 0.462271,
+            "dropout_rate": 0.465436,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000538,
+            "input_size": 2
+        }
+    },
+    "42": {
+        "score": 0.9045208,
+        "hyperparameters": {
+            "dropout_rate": 0.158573,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000538,
+            "input_size": 2
+        }
+    },
+    "19": {
+        "score": 0.8985056,
+        "hyperparameters": {
+            "dropout_rate": 0.18324,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000538,
+            "input_size": 2
+        }
+    },
+    "4": {
+        "score": 0.8976988,
+        "hyperparameters": {
+            "dropout_rate": 0.416567,
             "hidden_sizes": [
                 15,
                 15
             ],
             "lr": 0.000538,
-            "class_weight": false,
             "input_size": 2
         }
     },
-    "50": {
-        "score": 0.923844,
+    "9": {
+        "score": 0.8842500000000001,
         "hyperparameters": {
-            "dropout_rate": 0.417694,
+            "dropout_rate": 0.394607,
             "hidden_sizes": [
-                20
+                15,
+                15
             ],
             "lr": 0.000538,
-            "class_weight": false,
             "input_size": 2
         }
     },
-    "21": {
-        "score": 0.9232659999999999,
+    "3": {
+        "score": 0.8774787999999999,
         "hyperparameters": {
-            "dropout_rate": 0.226764,
+            "dropout_rate": 0.37513,
             "hidden_sizes": [
                 20,
                 20
             ],
             "lr": 0.000538,
-            "class_weight": false,
+            "input_size": 2
+        }
+    },
+    "2": {
+        "score": 0.8773128,
+        "hyperparameters": {
+            "dropout_rate": 0.153486,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000538,
             "input_size": 2
         }
     }

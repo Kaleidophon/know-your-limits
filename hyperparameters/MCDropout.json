@@ -1,58 +1,8 @@
 {
-    "52": {
-        "score": 0.978068,
+    "43": {
+        "score": 0.9277396,
         "hyperparameters": {
-            "dropout_rate": 0.392778,
-            "hidden_sizes": [
-                15,
-                15
-            ],
-            "lr": 0.000526,
-            "class_weight": false,
-            "input_size": 2
-        }
-    },
-    "51": {
-        "score": 0.9573799999999999,
-        "hyperparameters": {
-            "dropout_rate": 0.372212,
-            "hidden_sizes": [
-                5
-            ],
-            "lr": 0.000526,
-            "class_weight": false,
-            "input_size": 2
-        }
-    },
-    "54": {
-        "score": 0.9507720000000001,
-        "hyperparameters": {
-            "dropout_rate": 0.263728,
-            "hidden_sizes": [
-                10,
-                10
-            ],
-            "lr": 0.000526,
-            "class_weight": false,
-            "input_size": 2
-        }
-    },
-    "8": {
-        "score": 0.94999,
-        "hyperparameters": {
-            "dropout_rate": 0.473791,
-            "hidden_sizes": [
-                10
-            ],
-            "lr": 0.000526,
-            "class_weight": false,
-            "input_size": 2
-        }
-    },
-    "47": {
-        "score": 0.948576,
-        "hyperparameters": {
-            "dropout_rate": 0.47349,
+            "dropout_rate": 0.411997,
             "hidden_sizes": [
                 20,
                 20
@@ -62,10 +12,23 @@
             "input_size": 2
         }
     },
-    "0": {
-        "score": 0.9444119999999998,
+    "36": {
+        "score": 0.9234855999999999,
         "hyperparameters": {
-            "dropout_rate": 0.413828,
+            "dropout_rate": 0.246574,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000526,
+            "class_weight": false,
+            "input_size": 2
+        }
+    },
+    "4": {
+        "score": 0.9176404000000001,
+        "hyperparameters": {
+            "dropout_rate": 0.399275,
             "hidden_sizes": [
                 15,
                 15
@@ -75,11 +38,51 @@
             "input_size": 2
         }
     },
-    "27": {
-        "score": 0.941812,
+    "18": {
+        "score": 0.9089724,
         "hyperparameters": {
-            "dropout_rate": 0.21614,
+            "dropout_rate": 0.408193,
             "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000526,
+            "class_weight": false,
+            "input_size": 2
+        }
+    },
+    "31": {
+        "score": 0.9023979999999998,
+        "hyperparameters": {
+            "dropout_rate": 0.360624,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000526,
+            "class_weight": false,
+            "input_size": 2
+        }
+    },
+    "3": {
+        "score": 0.9019943999999999,
+        "hyperparameters": {
+            "dropout_rate": 0.053305,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000526,
+            "class_weight": false,
+            "input_size": 2
+        }
+    },
+    "22": {
+        "score": 0.8946584,
+        "hyperparameters": {
+            "dropout_rate": 0.484484,
+            "hidden_sizes": [
+                15,
                 15
             ],
             "lr": 0.000526,
@@ -87,38 +90,39 @@
             "input_size": 2
         }
     },
-    "26": {
-        "score": 0.9411120000000001,
+    "13": {
+        "score": 0.883944,
         "hyperparameters": {
-            "dropout_rate": 0.48329,
+            "dropout_rate": 0.404918,
             "hidden_sizes": [
-                5
+                20,
+                20
             ],
             "lr": 0.000526,
             "class_weight": false,
             "input_size": 2
         }
     },
-    "50": {
-        "score": 0.940612,
+    "44": {
+        "score": 0.8731484,
         "hyperparameters": {
-            "dropout_rate": 0.22776,
+            "dropout_rate": 0.215755,
             "hidden_sizes": [
-                10,
-                10
+                15,
+                15
             ],
             "lr": 0.000526,
             "class_weight": false,
             "input_size": 2
         }
     },
-    "35": {
-        "score": 0.9372480000000001,
+    "17": {
+        "score": 0.8686588000000001,
         "hyperparameters": {
-            "dropout_rate": 0.48015,
+            "dropout_rate": 0.178458,
             "hidden_sizes": [
-                10,
-                10
+                15,
+                15
             ],
             "lr": 0.000526,
             "class_weight": false,

@@ -25,8 +25,8 @@ from src.utils import entropy, SimpleDataset
 # CONST
 DEFAULT_LEARNING_RATE: float = 1e-2
 DEFAULT_BATCH_SIZE: int = 32
-DEFAULT_N_EPOCHS: int = 6
-DEFAULT_EARLY_STOPPING_PAT: int = 2
+DEFAULT_N_EPOCHS: int = 10
+DEFAULT_EARLY_STOPPING_PAT: int = 4
 
 
 class MLPModule(nn.Module):
@@ -441,7 +441,7 @@ class MultiplePredictionsMixin:
             else pred_sources_func
         )
 
-    def predict_proba(self, X_test: np.array, n_samples: int = 50) -> np.array:
+    def predict_proba(self, X_test: np.array, n_samples: int = 10) -> np.array:
         """
         Predict the probabilities for a batch of samples.
 
@@ -471,7 +471,7 @@ class MultiplePredictionsMixin:
 
         return np.stack([1 - predictions, predictions], axis=1)
 
-    def get_std(self, X_test: np.ndarray, n_samples: int = 50) -> np.array:
+    def get_var(self, X_test: np.ndarray, n_samples: int = 10) -> np.array:
         """
         Predict standard deviation between predictions.
 
@@ -491,9 +491,9 @@ class MultiplePredictionsMixin:
 
         predictions = self._predict_n_times(X_test_tensor, n_samples)
 
-        return np.std(np.array(predictions), axis=0)
+        return np.var(np.array(predictions), axis=0)
 
-    def get_mutual_information(self, X_test: np.ndarray, n_samples: int = 50) -> float:
+    def get_mutual_information(self, X_test: np.ndarray, n_samples: int = 10) -> float:
         """
         Compute the mutual information for over multiple predictions based on the approximation of [1] (eq. 7 / 8).
 
@@ -514,12 +514,12 @@ class MultiplePredictionsMixin:
         X_test_tensor = torch.tensor(X_test).float()
 
         predictions = self._predict_n_times(X_test_tensor, n_samples)
-        predictions = np.array(predictions).T
-        predictions = np.stack([1 - predictions, predictions], axis=2)
+        predictions = np.stack(predictions, axis=2)
+        predictions = np.stack([1 - predictions, predictions], axis=3)
 
-        return entropy(predictions.mean(axis=1), axis=1) - entropy(
-            predictions, axis=2
-        ).mean(axis=1)
+        return entropy(predictions.mean(axis=3), axis=2) - entropy(
+            predictions, axis=3
+        ).mean(axis=2)
 
     def _predict_n_times(self, X: torch.Tensor, n: int) -> List[float]:
         """
