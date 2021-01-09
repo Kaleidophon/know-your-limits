@@ -104,7 +104,9 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    X_train, y_train = make_moons(n_samples=2000, noise=0.125)
+    X_train, y_train = make_moons(n_samples=3000, noise=0.125)
+    X_train, X_val = X_train[:2000, :], X_train[2000:, :]
+    y_train, y_val = y_train[:2000], y_train[2000:]
 
     for model_name in tqdm(args.models):
         model_type = MODEL_CLASSES[model_name]
@@ -121,7 +123,7 @@ if __name__ == "__main__":
             train_params=TRAIN_PARAMS[model_name],
             method_name=model_name,
         )
-        ne.train(X_train, y_train, X_val=X_train, y_val=y_train)
+        ne.train(X_train, y_train, X_val=X_val, y_val=y_val)
         y_hat = np.argmax(ne.model.predict_proba(X_train), axis=1)
         roc_auc = roc_auc_score(y_train, y_hat)
 

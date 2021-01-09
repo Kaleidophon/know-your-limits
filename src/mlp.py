@@ -490,8 +490,10 @@ class MultiplePredictionsMixin:
         X_test_tensor = torch.tensor(X_test).float()
 
         predictions = self._predict_n_times(X_test_tensor, n_samples)
+        predictions = np.stack(predictions, axis=2)
+        predictions = np.stack([1 - predictions, predictions], axis=3)
 
-        return np.var(np.array(predictions), axis=0)
+        return np.mean(np.var(predictions, axis=2), axis=2)
 
     def get_mutual_information(self, X_test: np.ndarray, n_samples: int = 10) -> float:
         """

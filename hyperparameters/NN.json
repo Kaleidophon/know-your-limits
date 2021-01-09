@@ -1,8 +1,32 @@
 {
-    "17": {
-        "score": 0.9160383999999999,
+    "30": {
+        "score": 0.9346599000000001,
         "hyperparameters": {
-            "dropout_rate": 0.452688,
+            "dropout_rate": 0.365624,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000538,
+            "input_size": 2
+        }
+    },
+    "28": {
+        "score": 0.9341487,
+        "hyperparameters": {
+            "dropout_rate": 0.011183,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000538,
+            "input_size": 2
+        }
+    },
+    "16": {
+        "score": 0.9305282,
+        "hyperparameters": {
+            "dropout_rate": 0.066804,
             "hidden_sizes": [
                 15,
                 15
@@ -12,9 +36,9 @@
         }
     },
     "7": {
-        "score": 0.9143975999999998,
+        "score": 0.9291458,
         "hyperparameters": {
-            "dropout_rate": 0.274727,
+            "dropout_rate": 0.150643,
             "hidden_sizes": [
                 20,
                 20
@@ -23,10 +47,10 @@
             "input_size": 2
         }
     },
-    "35": {
-        "score": 0.90624,
+    "90": {
+        "score": 0.9288584,
         "hyperparameters": {
-            "dropout_rate": 0.030794,
+            "dropout_rate": 0.218471,
             "hidden_sizes": [
                 20,
                 20
@@ -35,46 +59,10 @@
             "input_size": 2
         }
     },
-    "59": {
-        "score": 0.9048632000000001,
+    "88": {
+        "score": 0.9253745999999999,
         "hyperparameters": {
-            "dropout_rate": 0.465436,
-            "hidden_sizes": [
-                20,
-                20
-            ],
-            "lr": 0.000538,
-            "input_size": 2
-        }
-    },
-    "42": {
-        "score": 0.9045208,
-        "hyperparameters": {
-            "dropout_rate": 0.158573,
-            "hidden_sizes": [
-                20,
-                20
-            ],
-            "lr": 0.000538,
-            "input_size": 2
-        }
-    },
-    "19": {
-        "score": 0.8985056,
-        "hyperparameters": {
-            "dropout_rate": 0.18324,
-            "hidden_sizes": [
-                20,
-                20
-            ],
-            "lr": 0.000538,
-            "input_size": 2
-        }
-    },
-    "4": {
-        "score": 0.8976988,
-        "hyperparameters": {
-            "dropout_rate": 0.416567,
+            "dropout_rate": 0.362972,
             "hidden_sizes": [
                 15,
                 15
@@ -83,22 +71,10 @@
             "input_size": 2
         }
     },
-    "9": {
-        "score": 0.8842500000000001,
+    "87": {
+        "score": 0.9252157999999999,
         "hyperparameters": {
-            "dropout_rate": 0.394607,
-            "hidden_sizes": [
-                15,
-                15
-            ],
-            "lr": 0.000538,
-            "input_size": 2
-        }
-    },
-    "3": {
-        "score": 0.8774787999999999,
-        "hyperparameters": {
-            "dropout_rate": 0.37513,
+            "dropout_rate": 0.2578,
             "hidden_sizes": [
                 20,
                 20
@@ -107,10 +83,34 @@
             "input_size": 2
         }
     },
-    "2": {
-        "score": 0.8773128,
+    "81": {
+        "score": 0.922987,
         "hyperparameters": {
-            "dropout_rate": 0.153486,
+            "dropout_rate": 0.435556,
+            "hidden_sizes": [
+                20,
+                20
+            ],
+            "lr": 0.000538,
+            "input_size": 2
+        }
+    },
+    "5": {
+        "score": 0.9227118000000001,
+        "hyperparameters": {
+            "dropout_rate": 0.106295,
+            "hidden_sizes": [
+                15,
+                15
+            ],
+            "lr": 0.000538,
+            "input_size": 2
+        }
+    },
+    "8": {
+        "score": 0.9223637,
+        "hyperparameters": {
+            "dropout_rate": 0.446127,
             "hidden_sizes": [
                 20,
                 20

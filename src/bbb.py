@@ -21,8 +21,8 @@ from src.mlp import MLPModule, MLP, MultiplePredictionsMixin
 # CONST
 DEFAULT_LEARNING_RATE: float = 1e-2
 DEFAULT_BATCH_SIZE: int = 32
-DEFAULT_N_EPOCHS: int = 6
-DEFAULT_EARLY_STOPPING_PAT: int = 2
+DEFAULT_N_EPOCHS: int = 10
+DEFAULT_EARLY_STOPPING_PAT: int = 4
 
 
 @variational_estimator

@@ -28,7 +28,7 @@ from src.model_init import MODEL_CLASSES
 
 # CONST
 SEED = 123
-TRIALS = 3
+TRIALS = 5
 RESULT_DIR = "./hyperparameters"
 
 
@@ -47,9 +47,9 @@ def perform_hyperparameter_search(
     save_top_n: int
         Save the top n parameter configuration. Default is 10.
     """
-    X_train, y_train = make_moons(n_samples=1000, noise=0.125)
+    X_train, y_train = make_moons(n_samples=2000, noise=0.125)
 
-    with tqdm(total=get_num_runs(models) * TRIALS) as progress_bar:
+    with tqdm(total=get_num_runs(models)) as progress_bar:
 
         for model_name in models:
 
