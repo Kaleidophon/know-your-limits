@@ -67,7 +67,7 @@ def plot_scores(
         ax.text(
             0.025,
             0.025,
-            f"ROC-AUC: {add_roc_auc:.2f}",
+            f"AUC-ROC: {add_roc_auc:.2f}",
             horizontalalignment="left",
             verticalalignment="bottom",
             transform=ax.transAxes,
