@@ -28,6 +28,12 @@ from src.novelty_estimator import NoveltyEstimator
 # CONST
 SEED = 123
 PLOT_DIR = "./plots"
+CMAP_RANGES = {
+    "var": [0, 0.25],
+    "entropy": [0, 1],
+    "mutual_information": [4, 5],
+    "max_prob": [0, 0.5],
+}
 
 
 def plot_scores(
@@ -46,15 +52,20 @@ def plot_scores(
     xx, yy = np.meshgrid(x, y)
     grid = np.stack([xx, yy], axis=2)
     scores = ne.get_novelty_score(grid, scoring_func)
-    fig_x = 9 if show_cmap else 7
+    fig_x = 9 if show_cmap else 8
     plt.figure(figsize=(fig_x, 8), dpi=400)
-    plt.contourf(xx, yy, scores, cmap=plt.cm.Purples, levels=40)
-    plt.colorbar()
+    vmin, vmax = CMAP_RANGES[scoring_func]
+    plt.contourf(xx, yy, scores, cmap=plt.cm.Purples, levels=40, vmin=vmin, vmax=vmax)
+
+    if show_cmap:
+        plt.colorbar()
+
+    colors = np.array(["#FFD700"] * y_train.shape[0])
+    colors[y_train == 1] = "#3CB371"
     plt.scatter(
         X_train[:, 0],
         X_train[:, 1],
-        c=y_train,
-        cmap="Set1",
+        c=colors,
         s=50,
         edgecolors="k",
         alpha=0.6,
@@ -71,7 +82,7 @@ def plot_scores(
             horizontalalignment="left",
             verticalalignment="bottom",
             transform=ax.transAxes,
-            fontsize=14,
+            fontsize=24,
             bbox=dict(
                 facecolor="white",
                 alpha=0.6,
@@ -104,9 +115,9 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    X_train, y_train = make_moons(n_samples=3000, noise=0.125)
-    X_train, X_val = X_train[:2000, :], X_train[2000:, :]
-    y_train, y_val = y_train[:2000], y_train[2000:]
+    X_train, y_train = make_moons(n_samples=750, noise=0.125)
+    X_train, X_val = X_train[:500, :], X_train[500:, :]
+    y_train, y_val = y_train[:500], y_train[500:]
 
     for model_name in tqdm(args.models):
         model_type = MODEL_CLASSES[model_name]
@@ -135,4 +146,5 @@ if __name__ == "__main__":
                 scoring_func=scoring_func,
                 img_path=f"{args.plot_dir}/{model_name.lower()}_{scoring_func}.png",
                 add_roc_auc=roc_auc,
+                show_cmap=False,
             )

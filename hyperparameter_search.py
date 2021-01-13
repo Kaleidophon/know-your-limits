@@ -23,12 +23,13 @@ from src.info import (
     NUM_EVALS,
     MODEL_PARAMS,
     TRAIN_PARAMS,
+    SHARED_NN_PARAMS,
 )
 from src.model_init import MODEL_CLASSES
 
 # CONST
 SEED = 123
-TRIALS = 5
+TRIALS = 1
 RESULT_DIR = "./hyperparameters"
 
 
@@ -47,7 +48,7 @@ def perform_hyperparameter_search(
     save_top_n: int
         Save the top n parameter configuration. Default is 10.
     """
-    X_train, y_train = make_moons(n_samples=2000, noise=0.125)
+    X_train, y_train = make_moons(n_samples=1000, noise=0.125)
 
     with tqdm(total=get_num_runs(models)) as progress_bar:
 
@@ -73,7 +74,7 @@ def perform_hyperparameter_search(
                         preds = model.predict(X_train)
 
                         # When model training goes completely awry
-                        if np.isnan(preds).all():
+                        if np.isnan(preds).any():
                             score = 0
 
                         else:

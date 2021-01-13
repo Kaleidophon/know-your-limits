@@ -6,6 +6,7 @@ hyperparameters, etc.
 # EXT
 import numpy as np
 from scipy.stats import uniform
+from sklearn.utils.fixes import loguniform
 
 # ### Models and novelty scoring functions ###
 
@@ -40,91 +41,85 @@ AVAILABLE_SCORING_FUNCS = {
 
 # ### Hyperparameters ###
 
+SHARED_NN_PARAMS = {
+    "dropout_rate": 0.014552,
+    "hidden_sizes": [25, 25, 25],
+    "lr": 0.000538,
+}
 MODEL_PARAMS = {
-    "NN": {
-        "dropout_rate": 0.365624,
-        "hidden_sizes": [20, 20],
-        "lr": 0.000538,
-    },
-    "PlattScalingNN": {
-        "dropout_rate": 0.365624,
-        "hidden_sizes": [20, 20],
-        "lr": 0.000538,
-    },
+    "NN": SHARED_NN_PARAMS,
+    "PlattScalingNN": SHARED_NN_PARAMS,
     "MCDropout": {
-        "dropout_rate": 0.369903,
-        "hidden_sizes": [15, 15],
+        "dropout_rate": 0.205046,
+        "hidden_sizes": [
+            25,
+            25,
+            25,
+            25,
+        ],
         "lr": 0.000526,
         "class_weight": False,
     },
     "BBB": {
-        "anneal": False,
-        "beta": 2.299666,
-        "dropout_rate": 0.170072,
-        "hidden_sizes": [20],
-        "posterior_mu_init": -0.048948,
-        "posterior_rho_init": -0.733795,
-        "prior_pi": 0.527592,
-        "prior_sigma_1": 0.246597,
-        "prior_sigma_2": 0.055023,
-        "lr": 0.000731,
+        "anneal": True,
+        "beta": 0.102995,
+        "dropout_rate": 0.267797,
+        "hidden_sizes": [25],
+        "lr": 0.00689,
+        "posterior_mu_init": 0.284989,
+        "posterior_rho_init": -7.649002,
+        "prior_pi": 0.196422,
+        "prior_sigma_1": 0.606531,
+        "prior_sigma_2": 0.904837,
         "class_weight": False,
     },
     "NNEnsemble": {
         "n_models": 10,
         "bootstrap": False,
-        "model_params": {
-            "dropout_rate": 0.365624,
-            "hidden_sizes": [20, 20],
-            "lr": 0.000538,
-        },
+        "model_params": SHARED_NN_PARAMS,
     },
     "AnchoredNNEnsemble": {
         "n_models": 10,
-        "model_params": {
-            "dropout_rate": 0.365624,
-            "hidden_sizes": [20, 20],
-            "lr": 0.000538,
-        },
+        "model_params": SHARED_NN_PARAMS,
     },
 }
 
 TRAIN_PARAMS = {
     "NN": {
-        "batch_size": 256,
+        "batch_size": 64,
         "early_stopping": True,
-        "early_stopping_patience": 3,
-        "n_epochs": 10,
+        "early_stopping_patience": 5,
+        "n_epochs": 20,
     },
     "PlattScalingNN": {
-        "batch_size": 256,
+        "batch_size": 64,
         "early_stopping": True,
-        "early_stopping_patience": 3,
-        "n_epochs": 10,
+        "early_stopping_patience": 5,
+        "n_epochs": 20,
     },
     "MCDropout": {
-        "batch_size": 256,
+        "batch_size": 64,
         "early_stopping": True,
-        "early_stopping_patience": 3,
-        "n_epochs": 10,
+        "early_stopping_patience": 5,
+        "n_epochs": 20,
     },
     "BBB": {
-        "batch_size": 256,
+        "batch_size": 64,
         "early_stopping": True,
-        "early_stopping_patience": 6,
-        "n_epochs": 10,
+        "early_stopping_patience": 5,
+        "n_epochs": 20,
     },
     "NNEnsemble": {
-        "batch_size": 256,
+        "batch_size": 64,
         "early_stopping": True,
-        "early_stopping_patience": 3,
-        "n_epochs": 8,
+        "early_stopping_patience": 5,
+        "n_epochs": 20,
     },
     "AnchoredNNEnsemble": {
-        "batch_size": 256,
+        "batch_size": 64,
         "early_stopping": True,
-        "early_stopping_patience": 3,
-        "n_epochs": 10,
+        "early_stopping_patience": 5,
+        "n_epochs": 20,
     },
 }
 
@@ -132,31 +127,32 @@ TRAIN_PARAMS = {
 PARAM_SEARCH = {
     "hidden_sizes": [
         [hidden_size] * num_layers
-        for hidden_size in [5, 10, 15, 20]
-        for num_layers in range(1, 3)
+        for hidden_size in [15, 20, 25]
+        for num_layers in range(1, 5)
     ],
+    "lr": loguniform(1e-4, 0.1),
     "batch_size": [16, 32, 64],
     # Intervals become [loc, loc + scale] for uniform
-    "dropout_rate": uniform(loc=0, scale=0.5),  # [0, 0.5]
-    "posterior_rho_init": uniform(loc=-8, scale=8),  # [-8, -2]
-    "posterior_mu_init": uniform(loc=-0.9, scale=1.8),  # [-0.6, 0.6]
-    "prior_pi": uniform(loc=0.05, scale=0.9),  # [0.1, 0.9]
-    "prior_sigma_1": [np.exp(d) for d in np.arange(-4, 0, 0.1)],
-    "prior_sigma_2": [np.exp(d) for d in np.arange(-4, 0, 0.1)],
+    "dropout_rate": uniform(loc=0, scale=0.35),  # [0, 0.5]
+    "posterior_rho_init": uniform(loc=-8, scale=6),  # [-8, -2]
+    "posterior_mu_init": uniform(loc=-0.6, scale=1.2),  # [-0.6, 0.6]
+    "prior_pi": uniform(loc=0.1, scale=0.8),  # [0.1, 0.9]
+    "prior_sigma_1": [np.exp(d) for d in np.arange(-0.8, 0, 0.1)],
+    "prior_sigma_2": [np.exp(d) for d in np.arange(-0.8, 0, 0.1)],
     "anneal": [True, False],
-    "beta": uniform(loc=0.05, scale=2.4),  # [0.1, 2.5]
+    "beta": uniform(loc=0.1, scale=2.4),  # [0.1, 2.5]
 }
 NUM_EVALS = {
-    "NN": 100,
+    "NN": 200,
     "MCDropout": 100,
-    "BBB": 500,
+    "BBB": 250,
 }
 
 
 # Default training hyperparameters
 DEFAULT_LEARNING_RATE: float = 1e-2
 DEFAULT_BATCH_SIZE: int = 32
-DEFAULT_N_EPOCHS: int = 6
+DEFAULT_N_EPOCHS: int = 10
 DEFAULT_EARLY_STOPPING_PAT: int = 2
 
 DEFAULT_RECONSTR_ERROR_WEIGHT: float = 1e20

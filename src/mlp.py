@@ -441,7 +441,7 @@ class MultiplePredictionsMixin:
             else pred_sources_func
         )
 
-    def predict_proba(self, X_test: np.array, n_samples: int = 10) -> np.array:
+    def predict_proba(self, X_test: np.array, n_samples: int = 50) -> np.array:
         """
         Predict the probabilities for a batch of samples.
 
@@ -462,7 +462,8 @@ class MultiplePredictionsMixin:
         if n_samples:
             # perform multiple forward passes with dropout activated.
             predictions = self._predict_n_times(X_test_tensor, n_samples)
-            predictions = np.mean(np.array(predictions), axis=0)
+            predictions = np.stack(predictions, axis=0)
+            predictions = np.mean(predictions, axis=0)
 
         else:
             predictions = (
@@ -542,14 +543,14 @@ class MultiplePredictionsMixin:
         return predictions
 
 
-class MCDropoutMLP(MLP, MultiplePredictionsMixin):
+class MCDropoutMLP(MultiplePredictionsMixin, MLP):
     """
     Class for a MLP using MC Dropout.
     """
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        MultiplePredictionsMixin.__init__(self)
+        super().__init__()
+        MLP.__init__(self, *args, **kwargs)
 
     def eval(self):
         """

@@ -21,7 +21,7 @@ from src.mlp import MLPModule, MLP, MultiplePredictionsMixin
 # CONST
 DEFAULT_LEARNING_RATE: float = 1e-2
 DEFAULT_BATCH_SIZE: int = 32
-DEFAULT_N_EPOCHS: int = 10
+DEFAULT_N_EPOCHS: int = 20
 DEFAULT_EARLY_STOPPING_PAT: int = 4
 
 
@@ -83,7 +83,7 @@ class BBBMLPModule(MLPModule):
         )
 
 
-class BBBMLP(MLP, MultiplePredictionsMixin):
+class BBBMLP(MultiplePredictionsMixin, MLP):
     """
     Implement the training of a Bayesian Multi-layer perceptron using Bayes-by-backprop.
     """
@@ -122,7 +122,9 @@ class BBBMLP(MLP, MultiplePredictionsMixin):
         anneal: bool
             Indicate whether the KL-term should be annealed over the course of the training.
         """
-        super().__init__(
+        super().__init__()
+        MLP.__init__(
+            self,
             hidden_sizes,
             input_size,
             dropout_rate,
@@ -134,8 +136,6 @@ class BBBMLP(MLP, MultiplePredictionsMixin):
         )
         self.anneal = anneal
         self.beta = beta
-
-        MultiplePredictionsMixin.__init__(self)
 
     def get_loss(
         self,
