@@ -3,10 +3,9 @@ Define some utility functions.
 """
 
 # STD
-from typing import Tuple, Union
+from typing import Tuple
 
 # EXT
-import numpy as np
 import torch
 from torch.utils.data import Dataset
 

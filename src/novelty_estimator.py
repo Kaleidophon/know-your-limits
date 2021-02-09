@@ -5,6 +5,7 @@ sample. The way that novelty is scored depends on the model type and scoring fun
 
 # EXT
 import numpy as np
+import torch
 
 # PROJECT
 from src.utils import entropy, max_prob
@@ -100,19 +101,20 @@ class NoveltyEstimator:
             self.model = self.model_type(**self.model_params)
             self.model.train(X_train, y_train, X_val, y_val, **self.train_params)
 
-    def get_novelty_score(self, data, scoring_func: str):
-        """Apply the novelty estimator to obtain a novelty score for the data.
+    def get_novelty_score(self, data: torch.Tensor, scoring_func: str) -> torch.Tensor:
+        """
+        Apply the novelty estimator to obtain a novelty score for the data.
 
         Parameters
         ----------
-        data: np.ndarray
+        data: torch.Tensor
             The data for which we want to get a novelty score
         scoring_func: str
             Name of function that is used to assess novelty.
 
         Returns
         -------
-        np.ndarray
+        torch.Tensor
             The novelty estimates.
         """
 
@@ -130,5 +132,35 @@ class NoveltyEstimator:
         return SCORING_FUNCS[(self.name, scoring_func)](self.model, data)
 
     def get_novelty_score_grad_magnitude(self, data, scoring_func: str):
-        # TODO
-        pass
+        """
+        Apply the novelty estimator to obtain the magnitude of the gradient of a novelty score w.r.t. the data.
+
+        Parameters
+        ----------
+        data: torch.Tensor
+            The data for which we want to get a novelty score
+        scoring_func: str
+            Name of function that is used to assess novelty.
+
+        Returns
+        -------
+        torch.Tensor
+            Gradient magnitude of novelty scores.
+        """
+        assert self.name in AVAILABLE_MODELS, (
+            f"Unknown model {self.name} found, has to be one of "
+            f"{', '.join(AVAILABLE_MODELS)}."
+        )
+
+        assert (self.name, scoring_func) in SCORING_FUNCS.keys(), (
+            f"Unknown combination of {self.name} and "
+            f"{scoring_func} found, has it been added to "
+            f"SCORING_FUNCS in src.models.novelty_estimator.py?"
+        )
+
+        data.requires_grad = True
+        scores = SCORING_FUNCS[(self.name, scoring_func)](self.model, data)
+        scores.backward(gradient=torch.ones(scores.shape))
+        grad_magnitudes = torch.norm(data.grad, dim=2)
+
+        return grad_magnitudes

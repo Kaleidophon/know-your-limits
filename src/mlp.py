@@ -130,21 +130,21 @@ class MLP:
         self.lr = lr
 
     def _initialize_dataloader(
-        self, X_train: np.ndarray, y_train: np.ndarray, batch_size: int
+        self, X_train: torch.Tensor, y_train: torch.Tensor, batch_size: int
     ):
         """
         Initialize the dataloader of the train data.
 
         Parameters
         ----------
-        X_train: np.ndarray
+        X_train: torch.Tensor
             The training data.
-        y_train: np.ndarray
+        y_train: torch.Tensor
             The labels corresponding to the training data.
         batch_size:
             The batch size.
         """
-        train_set = SimpleDataset(torch.from_numpy(X_train), torch.from_numpy(y_train))
+        train_set = SimpleDataset(X_train, y_train)
         self.train_loader = DataLoader(train_set, batch_size, shuffle=True)
 
     def get_loss(
@@ -204,8 +204,8 @@ class MLP:
             The validation loss.
         """
         self.model.eval()
-        X = torch.tensor(X_val).float()
-        y = torch.tensor(y_val).float().view(-1, 1)
+        X = X_val.float()
+        y = y_val.float().view(-1, 1)
 
         val_loss = self.get_loss(X, y, train=False)
 
@@ -213,10 +213,10 @@ class MLP:
 
     def train(
         self,
-        X_train: np.ndarray,
-        y_train: np.ndarray,
-        X_val: Optional[np.ndarray] = None,
-        y_val: Optional[np.ndarray] = None,
+        X_train: torch.Tensor,
+        y_train: torch.Tensor,
+        X_val: Optional[torch.Tensor] = None,
+        y_val: Optional[torch.Tensor] = None,
         batch_size: int = DEFAULT_BATCH_SIZE,
         n_epochs: int = DEFAULT_N_EPOCHS,
         early_stopping: bool = True,
@@ -227,13 +227,13 @@ class MLP:
 
         Parameters
         ----------
-        X_train: np.ndarray
+        X_train: torch.Tensor
             The training data.
-        y_train: np.ndarray
+        y_train: torch.Tensor
             The labels corresponding to the training data.
-        X_val: Optional[np.ndarray]
+        X_val: Optional[torch.Tensor]
             The validation data.
-        y_val: Optional[np.ndarray]
+        y_val: Optional[torch.Tensor]
             The labels corresponding to the validation data.
         batch_size: int
             The batch size, default 256
@@ -272,48 +272,48 @@ class MLP:
                 print("Early stopping after", epoch, "epochs.")
                 break
 
-    def fit(self, X_train: np.ndarray, y_train: np.ndarray, **train_kwargs):
+    def fit(self, X_train: torch.Tensor, y_train: torch.Tensor, **train_kwargs):
         """
         Fit an MLP to a dataset. Implemented to ensure compatibility to scikit-learn.
 
         Parameters
         ----------
-        X_train: np.ndarray
+        X_train: torch.Tensor
             The training data.
-        y_train: np.ndarray
+        y_train: torch.Tensor
             The labels corresponding to the training data.
         """
         self.train(X_train, y_train, **train_kwargs)
 
-    def predict_proba(self, X_test: np.array) -> torch.Tensor:
+    def predict_proba(self, X_test: torch.Tensor) -> torch.Tensor:
         """
         Predict the probabilities for a batch of samples.
 
         Parameters
         ----------
         X_test: np.array
-            Batch of samples as numpy array.
+            Batch of samples as torch tensor.
 
         Returns
         -------
         np.array
             Predictions for every sample.
         """
-        X_test_tensor = torch.tensor(X_test).float()
+        X_test_tensor = X_test.float()
 
         self.model.eval()
-        predictions = torch.sigmoid(self.model(X_test_tensor)).detach().squeeze()
+        predictions = torch.sigmoid(self.model(X_test_tensor)).squeeze()
 
         return torch.stack([1 - predictions, predictions], dim=1)
 
-    def predict(self, X_test: np.array) -> torch.Tensor:
+    def predict(self, X_test: torch.Tensor) -> torch.Tensor:
         """
-        Same as predict_proba(). Implement for compatability with scikit learn.
+        Same as predict_proba(). Implement for compatibility with scikit learn.
 
         Parameters
         ----------
         X_test: np.array
-            Batch of samples as numpy array.
+            Batch of samples as torch tensor.
 
         Returns
         -------
@@ -333,10 +333,10 @@ class PlattScalingMLP(MLP):
 
     def train(
         self,
-        X_train: np.ndarray,
-        y_train: np.ndarray,
-        X_val: Optional[np.ndarray] = None,
-        y_val: Optional[np.ndarray] = None,
+        X_train: torch.Tensor,
+        y_train: torch.Tensor,
+        X_val: Optional[torch.Tensor] = None,
+        y_val: Optional[torch.Tensor] = None,
         batch_size: int = DEFAULT_BATCH_SIZE,
         n_epochs: int = DEFAULT_N_EPOCHS,
         early_stopping: bool = True,
@@ -347,13 +347,13 @@ class PlattScalingMLP(MLP):
 
         Parameters
         ----------
-        X_train: np.ndarray
+        X_train: torch.Tensor
             The training data.
-        y_train: np.ndarray
+        y_train: torch.Tensor
             The labels corresponding to the training data.
-        X_val: np.ndarray
+        X_val: torch.Tensor
             The validation data.
-        y_val: np.ndarray
+        y_val: torch.Tensor
             The labels corresponding to the validation data.
         batch_size: int
             The batch size, default 256
@@ -380,7 +380,7 @@ class PlattScalingMLP(MLP):
         self.model.eval()
         scaling_layer = nn.Linear(1, 1).train()
 
-        val_set = SimpleDataset(torch.from_numpy(X_val), torch.from_numpy(y_val))
+        val_set = SimpleDataset(X_val, y_val)
         val_loader = DataLoader(val_set, batch_size, shuffle=True)
         loss_fn = torch.nn.BCEWithLogitsLoss()
         optimizer = torch.optim.SGD(scaling_layer.parameters(), lr=0.1)
@@ -439,14 +439,14 @@ class MultiplePredictionsMixin:
             else pred_sources_func
         )
 
-    def predict_proba(self, X_test: np.array, n_samples: int = 50) -> torch.Tensor:
+    def predict_proba(self, X_test: torch.Tensor, n_samples: int = 50) -> torch.Tensor:
         """
         Predict the probabilities for a batch of samples.
 
         Parameters
         ----------
-        X_test: np.array
-            Batch of samples as numpy array.
+        X_test: torch.Tensor
+            Batch of samples as torch tensor.
         n_samples: Optional[int]
             Number of forward passes in the case of MC Dropout.
 
@@ -455,7 +455,7 @@ class MultiplePredictionsMixin:
         torch.Tensor
             Predictions for every sample.
         """
-        X_test_tensor = torch.tensor(X_test).float()
+        X_test_tensor = X_test.float()
 
         if n_samples:
             # perform multiple forward passes with dropout activated.
@@ -464,18 +464,18 @@ class MultiplePredictionsMixin:
             predictions = torch.mean(predictions, dim=0)
 
         else:
-            predictions = torch.sigmoid(self.model(X_test_tensor)).detach().squeeze()
+            predictions = torch.sigmoid(self.model(X_test_tensor)).squeeze()
 
         return torch.stack([1 - predictions, predictions], dim=1)
 
-    def get_var(self, X_test: np.ndarray, n_samples: int = 10) -> torch.Tensor:
+    def get_var(self, X_test: torch.Tensor, n_samples: int = 10) -> torch.Tensor:
         """
         Predict standard deviation between predictions.
 
         Parameters
         ----------
-        X_test: np.array
-            Batch of samples as numpy array.
+        X_test: torch.Tensor
+            Batch of samples as torch tensor.
         n_samples: int
             Number of forward passes.
 
@@ -484,7 +484,7 @@ class MultiplePredictionsMixin:
         torch.Tensor
             Predictions for every sample.
         """
-        X_test_tensor = torch.tensor(X_test).float()
+        X_test_tensor = X_test.float()
 
         predictions = self._predict_n_times(X_test_tensor, n_samples)
         predictions = torch.stack(predictions, dim=2)
@@ -493,7 +493,7 @@ class MultiplePredictionsMixin:
         return torch.mean(torch.var(predictions, dim=2), dim=2)
 
     def get_mutual_information(
-        self, X_test: np.ndarray, n_samples: int = 10
+        self, X_test: torch.Tensor, n_samples: int = 10
     ) -> torch.Tensor:
         """
         Compute the mutual information for over multiple predictions based on the approximation of [1] (eq. 7 / 8).
@@ -502,8 +502,8 @@ class MultiplePredictionsMixin:
 
         Parameters
         ----------
-        X_test: np.array
-            Batch of samples as numpy array.
+        X_test: torch.Tensor
+            Batch of samples as torch tensor.
         n_samples: int
             Number of forward passes.
 
@@ -512,7 +512,7 @@ class MultiplePredictionsMixin:
         torch.Tensor
             Approximate mutual information.
         """
-        X_test_tensor = torch.tensor(X_test).float()
+        X_test_tensor = X_test.float()
 
         predictions = self._predict_n_times(X_test_tensor, n_samples)
         predictions = torch.stack(predictions, dim=2)
@@ -536,7 +536,7 @@ class MultiplePredictionsMixin:
         predictions = []
 
         for model in self.pred_sources_func(n):
-            predictions.append(torch.sigmoid(model(X)).detach().squeeze())
+            predictions.append(torch.sigmoid(model(X)).squeeze())
 
         return predictions
 

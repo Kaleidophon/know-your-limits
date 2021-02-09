@@ -50,8 +50,10 @@ def plot_scores(
     x = np.arange(-3.5, 4.5, 0.1)
     y = np.arange(-3, 3.5, 0.1)
     xx, yy = np.meshgrid(x, y)
-    grid = np.stack([xx, yy], axis=2)
-    scores = ne.get_novelty_score(grid, scoring_func)
+    grid = torch.Tensor(np.stack([xx, yy], axis=2))
+
+    # Create figure with uncertainty scores
+    scores = ne.get_novelty_score(grid, scoring_func).detach().numpy()
     fig_x = 9 if show_cmap else 8
     plt.figure(figsize=(fig_x, 8), dpi=200)
     vmin, vmax = CMAP_RANGES[scoring_func]
@@ -93,6 +95,50 @@ def plot_scores(
 
     plt.tight_layout()
     plt.savefig(img_path)
+    plt.close()
+
+    # Create figure with gradient magnitude of uncertainty scores w.r.t. data
+    grad_magnitudes = (
+        ne.get_novelty_score_grad_magnitude(grid, scoring_func).detach().numpy()
+    )
+    plt.figure(figsize=(9, 8), dpi=200)
+    plt.contourf(xx, yy, grad_magnitudes, cmap=plt.cm.YlGn, levels=40)
+
+    # if show_cmap:
+    plt.colorbar()
+
+    plt.scatter(
+        X_train[:, 0],
+        X_train[:, 1],
+        c=colors,
+        s=50,
+        edgecolors="k",
+        alpha=0.6,
+    )
+    ax = plt.gca()
+    ax.axes.xaxis.set_visible(False)
+    ax.axes.yaxis.set_visible(False)
+
+    if add_roc_auc is not None:
+        ax.text(
+            0.025,
+            0.025,
+            f"AUC-ROC: {add_roc_auc:.2f}",
+            horizontalalignment="left",
+            verticalalignment="bottom",
+            transform=ax.transAxes,
+            fontsize=24,
+            bbox=dict(
+                facecolor="white",
+                alpha=0.6,
+                edgecolor="black",
+                boxstyle="round,pad=0.5",
+            ),
+        )
+
+    plt.tight_layout()
+    plt.savefig(img_path.replace(".png", "_grads.png"))
+    plt.close()
 
 
 if __name__ == "__main__":
@@ -116,8 +162,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     X_train, y_train = make_moons(n_samples=750, noise=0.125)
-    X_train, X_val = X_train[:500, :], X_train[500:, :]
-    y_train, y_val = y_train[:500], y_train[500:]
+    X_train, X_val = torch.Tensor(X_train[:500, :]), torch.Tensor(X_train[500:, :])
+    y_train, y_val = torch.Tensor(y_train[:500]), torch.Tensor(y_train[500:])
 
     for model_name in tqdm(args.models):
         model_type = MODEL_CLASSES[model_name]
@@ -135,7 +181,7 @@ if __name__ == "__main__":
             method_name=model_name,
         )
         ne.train(X_train, y_train, X_val=X_val, y_val=y_val)
-        y_hat = np.argmax(ne.model.predict_proba(X_train), axis=1)
+        y_hat = torch.argmax(ne.model.predict_proba(X_train), dim=1).numpy()
         roc_auc = roc_auc_score(y_train, y_hat)
 
         for scoring_func in AVAILABLE_SCORING_FUNCS[model_name]:
