@@ -53,7 +53,7 @@ def plot_scores(
     grid = np.stack([xx, yy], axis=2)
     scores = ne.get_novelty_score(grid, scoring_func)
     fig_x = 9 if show_cmap else 8
-    plt.figure(figsize=(fig_x, 8), dpi=400)
+    plt.figure(figsize=(fig_x, 8), dpi=200)
     vmin, vmax = CMAP_RANGES[scoring_func]
     plt.contourf(xx, yy, scores, cmap=plt.cm.Purples, levels=40, vmin=vmin, vmax=vmax)
 

@@ -11,26 +11,26 @@ import torch
 from torch.utils.data import Dataset
 
 
-def entropy(probabilities: np.array, axis: int) -> Union[float, np.array]:
+def entropy(probabilities: torch.Tensor, dim: int) -> torch.Tensor:
     """
     Entropy of a probability distribution.
 
     Parameters
     ----------
-    probabilities: np.array
+    probabilities: torch.Tensor
         Probabilities per class.
-    axis: int
+    dim: int
         Axis over which the entropy should be calculated.
 
     Returns
     -------
-    float
+    torch.Tensor
         Entropy of the predicted distribution.
     """
-    return -np.sum(probabilities * np.log2(probabilities + 1e-8), axis=axis)
+    return -torch.sum(probabilities * torch.log2(probabilities + 1e-8), dim=dim)
 
 
-def max_prob(probabilities: np.array, axis: int) -> Union[float, np.array]:
+def max_prob(probabilities: torch.Tensor, dim: int) -> torch.Tensor:
     """
     Implement the baseline from [1], which just uses the maximum (softmax) probability as a OOD detection score.
 
@@ -38,17 +38,17 @@ def max_prob(probabilities: np.array, axis: int) -> Union[float, np.array]:
 
     Parameters
     ----------
-    probabilities: np.array
+    probabilities: torch.Tensor
         Probabilities per class.
-    axis: int
+    dim: int
         Axis over which the max should be taken.
 
     Returns
     -------
-    float
+    torch.Tensor
         Max class probability per sample.
     """
-    return 1 - np.max(probabilities, axis)
+    return 1 - torch.max(probabilities, dim)[0]
 
 
 class SimpleDataset(Dataset):

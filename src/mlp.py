@@ -285,7 +285,7 @@ class MLP:
         """
         self.train(X_train, y_train, **train_kwargs)
 
-    def predict_proba(self, X_test: np.array) -> np.array:
+    def predict_proba(self, X_test: np.array) -> torch.Tensor:
         """
         Predict the probabilities for a batch of samples.
 
@@ -302,13 +302,11 @@ class MLP:
         X_test_tensor = torch.tensor(X_test).float()
 
         self.model.eval()
-        predictions = (
-            torch.sigmoid(self.model(X_test_tensor)).detach().squeeze().numpy()
-        )
+        predictions = torch.sigmoid(self.model(X_test_tensor)).detach().squeeze()
 
-        return np.stack([1 - predictions, predictions], axis=1)
+        return torch.stack([1 - predictions, predictions], dim=1)
 
-    def predict(self, X_test: np.array) -> np.array:
+    def predict(self, X_test: np.array) -> torch.Tensor:
         """
         Same as predict_proba(). Implement for compatability with scikit learn.
 
@@ -319,7 +317,7 @@ class MLP:
 
         Returns
         -------
-        np.array
+        torch.Tensor
             Predictions for every sample.
         """
         return self.predict_proba(X_test)
@@ -441,7 +439,7 @@ class MultiplePredictionsMixin:
             else pred_sources_func
         )
 
-    def predict_proba(self, X_test: np.array, n_samples: int = 50) -> np.array:
+    def predict_proba(self, X_test: np.array, n_samples: int = 50) -> torch.Tensor:
         """
         Predict the probabilities for a batch of samples.
 
@@ -454,7 +452,7 @@ class MultiplePredictionsMixin:
 
         Returns
         -------
-        np.array
+        torch.Tensor
             Predictions for every sample.
         """
         X_test_tensor = torch.tensor(X_test).float()
@@ -462,17 +460,15 @@ class MultiplePredictionsMixin:
         if n_samples:
             # perform multiple forward passes with dropout activated.
             predictions = self._predict_n_times(X_test_tensor, n_samples)
-            predictions = np.stack(predictions, axis=0)
-            predictions = np.mean(predictions, axis=0)
+            predictions = torch.stack(predictions, dim=0)
+            predictions = torch.mean(predictions, dim=0)
 
         else:
-            predictions = (
-                torch.sigmoid(self.model(X_test_tensor)).detach().squeeze().numpy()
-            )
+            predictions = torch.sigmoid(self.model(X_test_tensor)).detach().squeeze()
 
-        return np.stack([1 - predictions, predictions], axis=1)
+        return torch.stack([1 - predictions, predictions], dim=1)
 
-    def get_var(self, X_test: np.ndarray, n_samples: int = 10) -> np.array:
+    def get_var(self, X_test: np.ndarray, n_samples: int = 10) -> torch.Tensor:
         """
         Predict standard deviation between predictions.
 
@@ -485,18 +481,20 @@ class MultiplePredictionsMixin:
 
         Returns
         -------
-        np.array
+        torch.Tensor
             Predictions for every sample.
         """
         X_test_tensor = torch.tensor(X_test).float()
 
         predictions = self._predict_n_times(X_test_tensor, n_samples)
-        predictions = np.stack(predictions, axis=2)
-        predictions = np.stack([1 - predictions, predictions], axis=3)
+        predictions = torch.stack(predictions, dim=2)
+        predictions = torch.stack([1 - predictions, predictions], dim=3)
 
-        return np.mean(np.var(predictions, axis=2), axis=2)
+        return torch.mean(torch.var(predictions, dim=2), dim=2)
 
-    def get_mutual_information(self, X_test: np.ndarray, n_samples: int = 10) -> float:
+    def get_mutual_information(
+        self, X_test: np.ndarray, n_samples: int = 10
+    ) -> torch.Tensor:
         """
         Compute the mutual information for over multiple predictions based on the approximation of [1] (eq. 7 / 8).
 
@@ -511,20 +509,20 @@ class MultiplePredictionsMixin:
 
         Returns
         -------
-        float
+        torch.Tensor
             Approximate mutual information.
         """
         X_test_tensor = torch.tensor(X_test).float()
 
         predictions = self._predict_n_times(X_test_tensor, n_samples)
-        predictions = np.stack(predictions, axis=2)
-        predictions = np.stack([1 - predictions, predictions], axis=3)
+        predictions = torch.stack(predictions, dim=2)
+        predictions = torch.stack([1 - predictions, predictions], dim=3)
 
-        return entropy(predictions.mean(axis=3), axis=2) - entropy(
-            predictions, axis=3
-        ).mean(axis=2)
+        return entropy(predictions.mean(dim=3), dim=2) - entropy(
+            predictions, dim=3
+        ).mean(dim=2)
 
-    def _predict_n_times(self, X: torch.Tensor, n: int) -> List[float]:
+    def _predict_n_times(self, X: torch.Tensor, n: int) -> List[torch.Tensor]:
         """
         Make predictions based on n forward passes.
 
@@ -538,7 +536,7 @@ class MultiplePredictionsMixin:
         predictions = []
 
         for model in self.pred_sources_func(n):
-            predictions.append(torch.sigmoid(model(X)).detach().squeeze().numpy())
+            predictions.append(torch.sigmoid(model(X)).detach().squeeze())
 
         return predictions
 

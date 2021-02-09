@@ -13,29 +13,29 @@ from src.info import AVAILABLE_MODELS, ENSEMBLE_MODELS
 # CONST
 # Define all combination of possible models and scoring funcs
 SCORING_FUNCS = {
-    ("NN", "entropy"): lambda model, data: entropy(model.predict_proba(data), axis=1),
-    ("NN", "max_prob"): lambda model, data: max_prob(model.predict_proba(data), axis=1),
+    ("NN", "entropy"): lambda model, data: entropy(model.predict_proba(data), dim=1),
+    ("NN", "max_prob"): lambda model, data: max_prob(model.predict_proba(data), dim=1),
     ("PlattScalingNN", "entropy"): lambda model, data: entropy(
-        model.predict_proba(data), axis=1
+        model.predict_proba(data), dim=1
     ),
     ("PlattScalingNN", "max_prob"): lambda model, data: max_prob(
-        model.predict_proba(data), axis=1
+        model.predict_proba(data), dim=1
     ),
     ("MCDropout", "entropy"): lambda model, data: entropy(
-        model.predict_proba(data), axis=1
+        model.predict_proba(data), dim=1
     ),
     ("MCDropout", "var"): lambda model, data: model.get_var(data),
     (
         "MCDropout",
         "mutual_information",
     ): lambda model, data: model.get_mutual_information(data),
-    ("BBB", "entropy"): lambda model, data: entropy(model.predict_proba(data), axis=1),
+    ("BBB", "entropy"): lambda model, data: entropy(model.predict_proba(data), dim=1),
     ("BBB", "var"): lambda model, data: model.get_var(data),
     ("BBB", "mutual_information"): lambda model, data: model.get_mutual_information(
         data
     ),
     ("NNEnsemble", "entropy"): lambda model, data: entropy(
-        model.predict_proba(data), axis=1
+        model.predict_proba(data), dim=1
     ),
     ("NNEnsemble", "var"): lambda model, data: model.get_var(data),
     (
@@ -43,7 +43,7 @@ SCORING_FUNCS = {
         "mutual_information",
     ): lambda model, data: model.get_mutual_information(data),
     ("AnchoredNNEnsemble", "entropy"): lambda model, data: entropy(
-        model.predict_proba(data), axis=1
+        model.predict_proba(data), dim=1
     ),
     ("AnchoredNNEnsemble", "var"): lambda model, data: model.get_var(data),
     (
@@ -128,3 +128,7 @@ class NoveltyEstimator:
         )
 
         return SCORING_FUNCS[(self.name, scoring_func)](self.model, data)
+
+    def get_novelty_score_grad_magnitude(self, data, scoring_func: str):
+        # TODO
+        pass
