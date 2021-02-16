@@ -98,6 +98,10 @@ def plot_scores(
     plt.close()
 
     # Create figure with gradient magnitude of uncertainty scores w.r.t. data
+    x = np.arange(-5.5, 6.5, 0.1)
+    y = np.arange(-5, 5.5, 0.1)
+    xx, yy = np.meshgrid(x, y)
+    grid = torch.Tensor(np.stack([xx, yy], axis=2))
     grad_magnitudes = (
         ne.get_novelty_score_grad_magnitude(grid, scoring_func).detach().numpy()
     )
