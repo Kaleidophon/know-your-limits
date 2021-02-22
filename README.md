@@ -16,7 +16,7 @@ functions divide the feature space into polytopal regions, on which they can be 
 plots below show the predictive entropy of a neural classifier on a synthetic multi-class classification problem (left)
 as well as the polytopes it induces in the feature space (right; using the code of Jordan et al., 2019).
 
-<p float="left">
+<p align="middle">
     <img src="plots/uncertainty.png" width="40%" />
     <img src="plots/polytopes.png" width="40%" />
 </p>
