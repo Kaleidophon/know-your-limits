@@ -28,12 +28,18 @@ input won't change the score - thus the gradient will be short or even zero. We 
 and uncertainty metrics, see some plots below (and more in the paper section 6 and appendix B).
 
 <p align="middle">
-    <img src="plots/nn_max_prob_grads.png" width="30%" />
-    <figcaption>Neural discriminator with max. prob. (Hendrycks & Gimpel, 2017)</figcaption>
-    <img src="plots/mcdropout_mutual_information_grads.png" width="30%" />
-    <figcaption>MC Dropout (Gal & Ghahramani, 2016) with mutual information (Smith & Gal, 2018)</figcaption>
-    <img src="plots/nnensemble_var_grads.png" width="30%" />
-    <figcaption>Neural ensemble (Lakshminarayanan et al., 2017) with class variance (Smith & Gal, 2018)</figcaption>
+    <figure>
+        <img src="plots/nn_max_prob_grads.png" width="30%" />
+        <figcaption>Neural discriminator with max. prob. (Hendrycks & Gimpel, 2017)</figcaption>
+    </figure>
+    <figure>
+        <img src="plots/mcdropout_mutual_information_grads.png" width="30%" />
+        <figcaption>MC Dropout (Gal & Ghahramani, 2016) with mutual information (Smith & Gal, 2018)</figcaption>
+    </figure>
+    <figure>
+        <img src="plots/nnensemble_var_grads.png" width="30%" />
+        <figcaption>Neural ensemble (Lakshminarayanan et al., 2017) with class variance (Smith & Gal, 2018)</figcaption>
+    </figure>
 </p>
 
 
