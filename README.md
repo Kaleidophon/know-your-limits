@@ -88,13 +88,6 @@ This performs the search for all models. Plots from figures 3, 5 and 6 can be re
 Both scripts supply a `-h` / `--help` option so that scripts can e.g. only be run for certain models.
 In order to reproduce figure 1, run the steps in notebook `multiclass_toy_uncertainty_polytopes.ipynb`.
 
-## Citation
-
-If you are using any code in this repository or cite our work, please cite us using the 
-information below:
-
-@TODO
-
 ## Bibliography 
 
 Raman Arora, Amitabh Basu, Poorya Mianjy, and Anirbit Mukherjee. Understanding deep neural networks withrectified linear
