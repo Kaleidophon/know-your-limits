@@ -1,13 +1,20 @@
 # Know Your Limits: Uncertainty Estimation with ReLU Classifiers Fails at Reliable OOD Detection
 
-@TODO
-* Add link to published paper
-* Add citation 
-
 This is the Github repository for the UAI 2021 of the same name, investigating 
 how ReLU activation functions and the softmax function in neural classifiers 
 This repository give an overview over findings, explain the repository structure and gives instruction on installation 
 and usage. 
+
+The paper can be found [here](https://arxiv.org/pdf/2012.05329.pdf).
+Please use the information below to cite our work (will be updated with the release of the UAI 2021 proceedings):
+
+    @article{ulmer2020know,
+      title={Know Your Limits: Uncertainty Estimation with ReLU Classifiers Fails at Reliable OOD Detection},
+      author={Ulmer, Dennis and Cin{\`a}, Giovanni},
+      journal={arXiv preprint arXiv:2012.05329},
+      year={2020}
+    }
+
 
 ## Findings 
 
