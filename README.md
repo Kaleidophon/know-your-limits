@@ -6,13 +6,15 @@ This repository give an overview over findings, explain the repository structure
 and usage. 
 
 The paper can be found [here](https://arxiv.org/pdf/2012.05329.pdf).
-Please use the information below to cite our work (will be updated with the release of the UAI 2021 proceedings):
+Please use the information below to cite our work:
 
-    @article{ulmer2020know,
-      title={Know Your Limits: Uncertainty Estimation with ReLU Classifiers Fails at Reliable OOD Detection},
-      author={Ulmer, Dennis and Cin{\`a}, Giovanni},
-      journal={arXiv preprint arXiv:2012.05329},
-      year={2020}
+    @inproceedings{ulmer2021know,
+        title={Know your limits: Uncertainty estimation with relu classifiers fails at reliable ood detection},
+        author={Ulmer, Dennis and Cin{\`a}, Giovanni},
+        booktitle={Uncertainty in Artificial Intelligence},
+        pages={1766--1776},
+        year={2021},
+        organization={PMLR}
     }
 
 
